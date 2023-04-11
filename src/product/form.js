@@ -114,31 +114,36 @@ const Form = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Presubmit Data:', product);
-    if (editMode) {
-      api
-        .put(`/api/products/${productData.product_id}`, product)
-        .then((response) => {
-          onSubmitSuccess();
-          handleClose();
-          resetFormFields();
-          console.log('Success Updated Data:', product);
-        })
-        .catch((error) => {
-          console.error('Error while updating product:', error);
-        });
-    } else {
-      api
-        .post('/api/products', product)
-        .then((response) => {
-          onSubmitSuccess();
-          handleClose();
-          resetFormFields();
-          console.log('Success Submit Data:', product);
-        })
-        .catch((error) => {
-          console.error('Error while creating product:', error);
-        });
-    }
+    const formData = {
+      name: product.name,
+      price: product.price,
+      unit: product.unit,
+      quantity: product.quantity,
+      type_id: product.type_id,
+      category_id: product.category_id,
+      expiry_date: product.expiry_date,
+      group_id: product.group_id,
+    };
+    const url = editMode
+      ? `/api/products/${productData.product_id}`
+      : '/api/products';
+    api({
+      method: editMode ? 'PUT' : 'POST',
+      url: url,
+      data: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        onSubmitSuccess();
+        handleClose();
+        resetFormFields();
+        console.log('Success Submit Data:', product);
+      })
+      .catch((error) => {
+        console.error('Error while creating product:', error);
+      });
   };
 
   return (
