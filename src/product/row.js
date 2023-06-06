@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Grid,
-  Typography,
-  IconButton,
-  Divider,
-  Box,
-} from '@mui/material';
+import { Grid, Typography, IconButton, Divider, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Collapse from '@mui/material/Collapse';
@@ -16,9 +10,9 @@ import api from '../api';
 const formatPrice = (price) =>
   price
     ? `Rp. ${price
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-        .replace(/\.00$/, '')}`
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+      .replace(/\.00$/, '')}`
     : '';
 
 const formatDate = (dateString) => {
@@ -31,13 +25,7 @@ const formatDate = (dateString) => {
   return formattedDate;
 };
 
-const Row = ({
-  product,
-  isSmallScreen,
-  handleOpenEditForm,
-  toggleRowCollapse,
-  isOpen,
-}) => {
+const Row = ({ product, isSmallScreen, handleOpenEditForm, toggleRowCollapse, isOpen }) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const formattedPrice = formatPrice(product.price);
@@ -55,19 +43,11 @@ const Row = ({
   };
 
   return (
-    <Grid
-      container
-      alignItems='center'
-      spacing={isSmallScreen ? 1 : 2}>
+    <Grid container alignItems='center' spacing={isSmallScreen ? 1 : 2}>
       {isSmallScreen ? (
         <>
           <Box mb={2} marginLeft='auto'>
-            <Grid
-              container
-              alignItems='center'
-              spacing={1}
-              marginLeft='auto'
-              marginTop='auto'>
+            <Grid container alignItems='center' spacing={1} marginLeft='auto' marginTop='auto'>
               <Grid item xs={5}>
                 <Typography>
                   <strong>Nama:</strong> {product.name}
@@ -97,14 +77,8 @@ const Row = ({
                 </Typography>
               </Grid>
               <Grid item xs={1}>
-                <IconButton
-                  size='small'
-                  onClick={handleToggleCollapse}>
-                  {isOpen ? (
-                    <KeyboardArrowUp />
-                  ) : (
-                    <KeyboardArrowDown />
-                  )}
+                <IconButton size='small' onClick={handleToggleCollapse}>
+                  {isOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                 </IconButton>
               </Grid>
               <Grid item xs={1}>
@@ -140,10 +114,7 @@ const Row = ({
             <Typography>{product.quantity}</Typography>
           </Grid>
           <Grid item xs={1}>
-            <IconButton
-              size='small'
-              color='primary'
-              onClick={() => handleOpenEditForm(product)}>
+            <IconButton size='small' color='primary' onClick={() => handleOpenEditForm(product)}>
               <EditIcon />
             </IconButton>
           </Grid>
@@ -159,8 +130,20 @@ const Row = ({
       )}
       <Grid item xs={12}>
         <Collapse in={isOpen} timeout='auto' unmountOnExit>
-          {' '}
-          Masih dalam pembuatan
+          <Box mb={2} marginLeft='auto'>
+            <Grid container alignItems='center' marginLeft='auto' marginTop='auto'>
+              <Grid item xs={5}>
+                <Typography>
+                  <strong>Produk ID:</strong> {product.product_id}
+                </Typography>
+              </Grid>
+              <Grid item xs={5}>
+                <Typography>
+                  <strong>Tanggal Kadaluarsa:</strong> {formatDate(product.expiry_date)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
         </Collapse>
       </Grid>
     </Grid>
